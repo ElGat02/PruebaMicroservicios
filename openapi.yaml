@@ -1,0 +1,183 @@
+openapi: 3.0.3
+info:
+  title: Mascotas API
+  description: API para la gestión de mascotas.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@mascotas.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/mascotas/rs
+tags:
+  - name: mascotas
+    description: Todo sobre mascotas
+paths:
+  /mascotas:
+    post:
+      tags:
+        - mascotas
+      summary: Crear una nueva mascota
+      description: Crear una nueva mascota en la base de datos.
+      operationId: crearMascota
+      requestBody:
+        description: Datos de la mascota a crear
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mascota'
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mascota'
+        '400':
+          description: Error al guardar la mascota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+        - mascotas
+      summary: Actualizar una mascota existente
+      description: Actualizar los datos de una mascota existente en la base de datos.
+      operationId: actualizarMascota
+      requestBody:
+        description: Datos de la mascota a actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MascotaPut'
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mascota'
+        '406':
+          description: Error al actualizar la mascota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - mascotas
+      summary: Borrar una mascota
+      description: Borrar una mascota de la base de datos.
+      operationId: borrarMascota
+      parameters:
+        - name: id
+          in: query
+          description: ID de la mascota a borrar
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: integer
+        '500':
+          description: Error al borrar la mascota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /mascotas/list:
+    get:
+      tags:
+        - mascotas
+      summary: Obtener todas las mascotas
+      description: Obtener todas las mascotas
+      operationId: obtenerTodasLasMascotas
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mascota'
+        '404':
+          description: Mascota no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /mascotas/{id}:
+    get:
+      tags:
+        - mascotas
+      summary: Obtener una mascota por su ID
+      description: Obtener los datos de una mascota por su ID.
+      operationId: obtenerMascotaPorID
+      parameters:
+        - name: id
+          in: path
+          description: ID de la mascota a obtener
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mascota'
+        '404':
+          description: Mascota no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+components:
+  schemas:
+    Mascota:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: 'Rex'
+        especie:
+          type: string
+          example: 'Perro'
+        raza:
+          type: string
+          example: 'Labrador'
+          
+    MascotaPut:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        nombre:
+          type: string
+          example: 'Rex'
+        especie:
+          type: string
+          example: 'Perro'
+        raza:
+          type: string
+          example: 'Labrador'
+        
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

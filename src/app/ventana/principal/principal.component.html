@@ -1,0 +1,66 @@
+<div class="mascotas-container">
+  <div class="mascotas-form">
+    <h1>{{ id ? 'Editar Mascota' : 'Agregar Mascota' }}</h1>
+    <form [formGroup]="mascotaForm">
+      <!-- Campo para ingresar el ID -->
+      <div class="form-group" *ngIf="id">
+        <label for="id">ID</label>
+        <input id="id" formControlName="id" type="text" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" formControlName="nombre" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="especie">Especie</label>
+        <input id="especie" formControlName="especie" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="raza">Raza</label>
+        <input id="raza" formControlName="raza" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="dueno">Dueno</label>
+        <input id="dueno" formControlName="dueno" type="text">
+      </div>
+
+      <div class="buttons">
+        <button type="button" (click)="add()">Agregar</button>
+        <button type="button" (click)="update()">Modificar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="mascotas-list">
+    <h1>Lista de Mascotas</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Especie</th>
+          <th>Raza</th>
+          <th>dueno</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mascota of mascotas" (click)="selected(mascota.id ?? 0)">
+          <td>{{ mascota.id }}</td>
+          <td>{{ mascota.nombre }}</td>
+          <td>{{ mascota.especie }}</td>
+          <td>{{ mascota.raza }}</td>
+          <td>{{ mascota.dueno }}</td>
+          
+          <td>
+            <button (click)="mascota.id !== undefined && deleteMascota(mascota.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
